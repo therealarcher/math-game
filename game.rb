@@ -1,5 +1,4 @@
 require './player'
-require './question'
 
 class Game
 
@@ -8,8 +7,51 @@ class Game
     @player2 = Player.new("Player 2")
     @players = [@player1, @player2]
   end
+  
+  def play
+    
+    turn = 1
+    while true
+      turn = (turn + 1) % 2 #to switch turns
+      puts "this turn belongs to Player #{turn + 1}"
+      challenge(@players[turn])
+      puts "Number of lives remaining is #{@players[turn].lives}"
+      puts "*" * 30
 
-  # def get_name
+      if @players[turn].lives == 0
+        puts "You have no more lives."
+        which_player_wins(@players)
+        break
+      end
+
+    end
+  end
+
+  def challenge(player)
+    num1 = rand(0..20)
+    num2 = rand(0..20)
+    puts "What is the sum of #{num1} and #{num2}"
+    userInput = gets.chomp
+    if userInput.to_f == num1 + num2
+      puts "You got correct answer!"
+    else
+      puts "Sorry, wrong answer"
+      player.lives -= 1
+    end
+  end
+
+  def which_player_wins(players)
+    # puts "testing testing"
+    players.select do |player|
+      if player.lives != 0
+      puts "#{player.name} wins"
+      end
+    end
+  end
+
+end
+
+# def get_name
   #   print "Player 1, what is your name? "
   #   player1 = Player.new(gets.chomp)
   #   print "Player 2, what is your name? "
@@ -29,41 +71,3 @@ class Game
   #   starting_player = @players[@starting_player_index]
   #   puts "#{starting_player} is up first!"
   # end
-  
-  
-  def play
-    
-    puts "playing game"
-
-    turn = 1
-    while true
-      turn = (turn + 1) % 2
-      puts "this turn belongs to Player #{turn + 1}"
-      challenge(@players[turn])
-      puts "Number of lives remaining is #{@players[turn].lives}"
-
-      if @players[turn].lives == 0
-        puts "You such the most"
-        break
-      end
-
-    end
-  end
-
-  def challenge(player)
-    # a = (0..20).to_a.sample
-    # b = (0..20).to_a.sample
-    a = rand(0..20)
-    b = rand(0..20)
-    puts "What is the sum of #{a} and #{b}"
-    userInput = gets.chomp
-    if userInput.to_f == a + b
-      puts "You got correct answer!"
-    else
-      puts "You suck"
-      player.lives -= 1
-    end
-  end
-
-end
-

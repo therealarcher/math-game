@@ -1,7 +1,6 @@
 #! /usr/bin/env ruby
 require './game'
 require './player'
-require './question'
 
 puts "Welcome to Math Wars!!"
 
